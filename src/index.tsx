@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+import registerServiceWorker from './registerServiceWorker';
+import AutoCompleteStore from './store/AutocompleteModel';
+
+const autoCompleteStore = new AutoCompleteStore();
 
 ReactDOM.render(
-  <App />,
+  <App store={autoCompleteStore} />,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

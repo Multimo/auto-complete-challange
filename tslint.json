@@ -1,5 +1,6 @@
 {
-    "extends": ["tslint-react"],
+    "extends": ["tslint-react", "tslint-config-busbud"],
+    "defaultSeverity": "warning",
     "rules": {
         "align": [
             true,
@@ -21,14 +22,9 @@
         "jsdoc-format": true,
         "jsx-no-lambda": false,
         "jsx-no-multiline-js": false,
+        "proper-import-require": false,
         "label-position": true,
         "max-line-length": [ true, 120 ],
-        "member-ordering": [
-            true,
-            "public-before-private",
-            "static-before-instance",
-            "variables-before-functions"
-        ],
         "no-any": true,
         "no-arg": true,
         "no-bitwise": true,
