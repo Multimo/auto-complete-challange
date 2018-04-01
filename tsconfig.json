@@ -10,6 +10,8 @@
     "jsx": "react",
     "moduleResolution": "node",
     "rootDir": "src",
+    "noEmit": true,
+    "noEmitOnError": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "noImplicitReturns": true,

@@ -1,16 +1,15 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { Form, Text } from 'react-form';
-// import AutocompleteInput from './AutocompleteInput/AutocompleteInput';
+import { Form } from 'react-form';
+import { AutoCompleteStoreShape } from 'store/AutocompleteModel';
+import './Autocomplete.css';
+import AutocompleteInput from './AutocompleteInput/AutocompleteInput';
 
 interface Props {
-  store: {
-    departureInput: string; 
-    destinationInput: string;
-  }
+  store: AutoCompleteStoreShape;
 }
 
-@observer
+@observer(['store'])
 class Autocomplete extends React.Component<Props> {
   render() {
     const { store } = this.props;
@@ -19,18 +18,20 @@ class Autocomplete extends React.Component<Props> {
             render={({
             submitForm
         }) => (
-            <form onSubmit={submitForm}>
-                <Text 
+            <form onSubmit={submitForm} className="form">
+                <AutocompleteInput 
                     field="departure" 
-                    placeholder="Going to"
-                    value={store.departureInput}
+                    placeholder="Leaving From"
+                    onChange={(value) => store.updateDepartureFeild(String(value))}
+                    results={store.departureResults}
                 />
-                <Text 
-                    field="destination" 
+                <AutocompleteInput 
+                    field="destination"
                     placeholder="Going to"
-                    value={store.destinationInput}
+                    onChange={(value) => store.updateDestinationFeild(String(value))}
+                    results={store.destinationResults}
                 />
-                <button type="submit">Submit</button>
+                <button className="submit" type="submit">Submit</button>
             </form>
         )} 
         />
@@ -38,4 +39,4 @@ class Autocomplete extends React.Component<Props> {
   }
 }
 
-export default Autocomplete;
+export default Autocomplete as React.ComponentClass<{}>;

@@ -1,0 +1,11 @@
+.form {
+    display: flex;
+    justify-content: center;
+}
+
+.submit {
+    flex-grow: .5;
+    background: white;
+    color: #0e8bc4;
+    border: none;
+}

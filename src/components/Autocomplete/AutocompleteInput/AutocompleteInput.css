@@ -1,3 +1,18 @@
-.input {
- background: red;   
+
+.root {
+    flex-grow: 1;
+    position: relative;
+}
+
+.inputs {
+    box-sizing: border-box;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.results {
+    position: absolute;
+    list-style: none;
+    padding: 5px;
+    margin: 0;
 }
