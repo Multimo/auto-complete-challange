@@ -26,7 +26,7 @@ class AutocompleteInput extends React.Component<MobxProps> {
     // TODO: fix this hack, event propergation maybe?
     setTimeout(
       () => { this.setState({ active: !this.state.active }); },
-      100
+      150
     );
   }
 

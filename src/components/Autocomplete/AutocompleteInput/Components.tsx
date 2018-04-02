@@ -9,7 +9,7 @@ export const Root = styled.div`
 
   @media (max-width: 600px) {
     margin-bottom: 45px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.52);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.52);
   }
 `;
 
@@ -62,7 +62,7 @@ export const Input = styled.input`
 
 export const Fade = transition.div.attrs({
   unmountOnExit: true,
-  timeout: 350
+  timeout: 200
 })`
 position: absolute;
 background: #084661;
@@ -83,8 +83,8 @@ top: -25px;
   opacity: 1;
   top: -25px;
   transition: 
-    opacity 350ms ease-in,
-    top 350ms ease-in;
+    opacity 200ms linear,
+    top 200ms linear;
 }
 &:exit { 
   opacity: 1;
@@ -94,7 +94,7 @@ top: -25px;
   opacity: 0.01;
   top: 0px;
   transition: 
-    opacity 350ms ease-in,
-    top 350ms ease-in;
+    opacity 200ms linear,
+    top 200ms linear;
 }
 `;
