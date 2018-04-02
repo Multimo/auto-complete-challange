@@ -1,1 +1,1 @@
-declare module 'styled-animate';
+declare module 'styled-transition-group';

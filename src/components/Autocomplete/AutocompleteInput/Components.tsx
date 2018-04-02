@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styled, { StyledFunction } from 'styled-components';
 import transition from 'styled-transition-group';
 
@@ -34,7 +33,6 @@ export const SwapSvg = styled.img`
   position: absolute;
   right: 10px;
   top: 5px;
-  background: #2286dc;
   z-index: 3;
 `;
 

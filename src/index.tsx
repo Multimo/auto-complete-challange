@@ -6,6 +6,8 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import autoCompleteStore from './store/AutocompleteModel';
 
+import './i18n';
+
 ReactDOM.render(
   <Provider store={autoCompleteStore}>
     <App />

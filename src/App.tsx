@@ -1,5 +1,5 @@
-import DevTools from 'mobx-react-devtools';
 import * as React from 'react';
+import { I18n } from 'react-i18next';
 import styled from 'styled-components';
 import Autocomplete from './components/Autocomplete/Autocomplete';
 
@@ -29,15 +29,38 @@ const Blurb = styled.p`
   text-shadow: 0px 1px 2px #00000099;
 `;
 
+const LanguageSwitcher = styled.button`
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: none;
+  font-size: 16px;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
 const App = () => (
-  <Root>
-    <Header>
-      <Title>Find a bus for your next trip</Title>
-      <Blurb>Now serving bus schedules for 10436 cities in 89 countries</Blurb>
-      <Autocomplete />
-    </Header>
-    <DevTools />
-  </Root>
+  <I18n ns="translations">
+   {(t, { i18n }) => (
+      <Root>
+        <Header>
+          <Title>{t('title')}</Title>
+          <Blurb>{t('blurb')}</Blurb>
+          <Autocomplete />
+        </Header>
+        <LanguageSwitcher 
+          onClick={() => { 
+            i18n.changeLanguage(
+            i18n.language === 'en' ? 'fr' : 'en'
+            );
+          }}
+        >
+          {i18n.language === 'en' ? 'fr' : 'en'}
+        </LanguageSwitcher>
+      </Root>
+    )}
+  </I18n>
 );
 
 export default App;

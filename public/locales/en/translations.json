@@ -1,0 +1,11 @@
+{
+  "title": "Find a bus for your next trip",
+  "blurb": "Now serving bus schedules for 10436 cities in 89 countries",
+  "search": "Search",
+  "departure": {
+    "leaving_from": "Leaving from"
+  },
+  "destination": {
+    "going_to": "Going to"
+  }
+}
