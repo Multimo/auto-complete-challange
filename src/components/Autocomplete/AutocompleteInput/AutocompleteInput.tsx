@@ -1,10 +1,12 @@
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-// import { Text } from 'react-form';
 import { AutoCompleteStoreShape, FieldType } from 'store/AutocompleteModel';
-import AutocompleteResults from '../AutocompleteResults/AutocompleteResults';
-import './AutocompleteInput.css';
+import AutocompleteResults from '../AutocompleteResults/AutocompleteResults'; 
+import { FadeInOut, Image, Input, InputContainer, Root, SwapSvg } from './Components';
+const departure = require('./departure.svg');
+const destination = require('./destination.svg');
+const swap = require('./swap.svg');
 
 interface Props {
   field: FieldType;
@@ -26,29 +28,43 @@ class AutocompleteInput extends React.Component<MobxProps> {
   render() {
     const { field, placeholder, store } = this.props;
     const { active } = this.state;
-    console.log(store.departure.input);
+
     return (
-      <div className="root">
-        <input 
-          className="inputs"
-          name={field}
-          type="text"
-          autoComplete="off"
-          required={true}
-          value={toJS(store[field].input)}
-          placeholder={placeholder}
-          onChange={(event) => store.updateFeild(event.target.value, field)}
-          onFocus={() => this.setActive()}
-          onBlur={() => this.setActive()}
-          onKeyDown={(event) => store.moveSelection(event, field)}
-        />
+      <Root>
+        <InputContainer>
+          <FadeInOut in={this.state.active}>
+          {placeholder}
+          </FadeInOut>
+          <Image 
+            src={field === 'departure' ? departure : destination} 
+            className="App-logo" 
+            alt="logo" 
+          />
+          <Input 
+            className="inputs"
+            name={field}
+            type="text"
+            autoComplete="off"
+            required={true}
+            value={toJS(store[field].input)}
+            placeholder={placeholder}
+            onChange={(event) => store.updateFeild(event.target.value, field)}
+            onFocus={() => this.setActive()}
+            onBlur={() => this.setActive()}
+            onKeyDown={(event) => store.moveSelection(event, field)}
+          />
+          {!(field === 'departure' && store.departure.input) ? null : (
+            <SwapSvg src={swap} onClick={this.props.store.swapInputs} />
+          )}
+        </InputContainer>
         <AutocompleteResults 
           results={store[field].apiResults} 
           focused={active} 
           selectedIndex={store[field].currentSelection} 
+          updateFeild={store.updateFeild}
+          field={field}
         />
-        <h2 >{toJS(store[field].input)}</h2>
-      </div>
+      </Root>
     );   
   }
 }

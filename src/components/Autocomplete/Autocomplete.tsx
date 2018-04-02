@@ -1,29 +1,38 @@
 
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import { Form } from 'react-form';
+import { AutoCompleteStoreShape } from 'store/AutocompleteModel';
 import './Autocomplete.css';
 import AutocompleteInput from './AutocompleteInput/AutocompleteInput';
 
-class Autocomplete extends React.Component<{}> {
+interface Props {
+  store: AutoCompleteStoreShape;
+}
+
+@observer(['store'])
+class Autocomplete extends React.Component<Props> {
+  
+  handSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const isValid = this.props.store.validateSubmit;
+    if (isValid) {
+      alert('Bon Voyage!');
+    }
+  }
+
   render() {
     return (
-        // <Form 
-        //     render={({
-        //     submitForm
-        // }) => (
-            <form className="form">
-                <AutocompleteInput 
-                    field="departure" 
-                    placeholder="Leaving From"
-                />
-                <AutocompleteInput 
-                    field="destination"
-                    placeholder="Going to"
-                />
-                <button className="submit" type="submit">Submit</button>
-            </form>
-        //     )} 
-        // // />
+        <form className="form" onSubmit={this.handSubmit}>
+            <AutocompleteInput 
+                field="departure" 
+                placeholder="Leaving From"
+            />
+            <AutocompleteInput 
+                field="destination"
+                placeholder="Going to"
+            />
+            <button className="submit" type="submit">Submit</button>
+        </form>
     );
   }
 }

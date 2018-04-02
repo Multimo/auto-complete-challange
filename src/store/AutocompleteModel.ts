@@ -1,4 +1,4 @@
-import { action, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 
 const endpoint = 'http://busbud-napi-prod.global.ssl.fastly.net/search';
 const buildQuery = (query: string) => `${endpoint}?q=${query}`;
@@ -43,7 +43,10 @@ export interface AutoCompleteStoreShape {
 
   updateFeild(value: string, field: FieldType): void;
   resetACResults(): void;
+  swapInputs(): void;
   moveSelection(key: React.KeyboardEvent<{}>, fieldType: FieldType): void;
+
+  validateSubmit(): boolean;
 }
 
 class AutoCompleteStore {
@@ -61,6 +64,18 @@ class AutoCompleteStore {
   @action
   updateFeild = (newValue: string, fieldType: FieldType) => {
     this[fieldType].input = newValue;
+  }
+
+  @action
+  swapInputs = () => {
+    const destinationInput = this.destination.input;
+    const departureInput = this.departure.input;
+    this.departure.input = destinationInput;
+    this.destination.input = departureInput;
+  }
+
+  @computed get validateSubmit() {
+    return !!(this.departure.input && this.destination.input);
   }
 
   @action
@@ -112,8 +127,10 @@ reaction(
   () => autoCompleteStore.departure.input,
   query => {
     if (query.length >= 2) {
-      autoCompleteStore.fetchAutocomplete(query, 'departure');
+      return autoCompleteStore.fetchAutocomplete(query, 'departure');
     }
+
+    autoCompleteStore.departure.apiResults = [];
   }
 );
 
@@ -121,8 +138,9 @@ reaction(
   () => autoCompleteStore.destination.input,
   query => {
     if (query.length >= 2) {
-      autoCompleteStore.fetchAutocomplete(query, 'destination');
+      return autoCompleteStore.fetchAutocomplete(query, 'destination');
     }
+    autoCompleteStore.destination.apiResults = [];
   }
 );
 

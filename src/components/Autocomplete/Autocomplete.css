@@ -1,12 +1,13 @@
 .form {
     display: flex;
     justify-content: center;
-    padding: 25px 0;
+    margin: 45px 0 25px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.52);
 }
 
 .submit {
     flex-grow: .5;
-    background: white;
-    color: #0e8bc4;
+    color: white;
     border: none;
+    background: #3795e4;
 }

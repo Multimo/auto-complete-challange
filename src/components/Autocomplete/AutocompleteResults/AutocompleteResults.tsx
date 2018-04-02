@@ -1,25 +1,62 @@
 import * as React from 'react';
 import { ApiResponse } from 'store/AutocompleteModel';
-import './AutocompleteResults.css';
+import styled, { StyledFunction } from 'styled-components';
+
+interface ListItemProps {
+  isSelected?: boolean;
+}
+const listItem: StyledFunction<ListItemProps & React.HTMLProps<HTMLLIElement>> = styled.li;
+const ListItem = listItem`
+  font-size: 14px;
+  font-weight: 300;
+  padding: 10px 10px 10px 40px;
+  transition: background 0.7s;
+  cursor: pointer;
+  z-index: 2;
+  background: ${props => props.isSelected ? '#084661' : 'none'};
+
+  &:hover {
+  background: #084661;
+  }
+
+  &:nth-child(1) {
+    padding-top: 10px;
+  }
+`;
+
+const Results = styled.ul`
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #1d7fd1;
+  width: 100%;
+`;
 
 interface Props {
   results?: ApiResponse[];
   focused: boolean;
   selectedIndex?: number;
+  field: string;
+  updateFeild(newValue: string, field: string): void;
 }
 
-const AutocompleteResults = ({ results, focused, selectedIndex }: Props) => {
-  if (!results || !focused) {
+const AutocompleteResults = ({ results, focused, selectedIndex, updateFeild, field }: Props) => {
+  if (!results) {
     return null;
   }
   return (
-    <ul className="results">
+    <Results>
         {results.map((result, index) => (
-            <li key={result.city_id} className="list">
-                {selectedIndex === index ? <b>***</b> : null}{result.full_name}
-            </li>
+            <ListItem 
+              key={result.city_id} 
+              isSelected={selectedIndex === index}
+              onClick={() => updateFeild(result.full_name, field)}
+            >
+              {result.full_name}
+            </ListItem>
         ))}
-    </ul>
+    </Results>
   ); 
 };
 
