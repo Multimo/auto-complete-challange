@@ -7,7 +7,7 @@ const App = () => (
   <div className="App">
     <header className="App-header">
       <h1 className="App-title">Find a bus for your next trip</h1>
-      <p>Now serving bus schedules for 10436 cities in 89</p>
+      <p>Now serving bus schedules for 10436 cities in 89 countries</p>
       <Autocomplete />
     </header>
     <DevTools />

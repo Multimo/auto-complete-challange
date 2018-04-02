@@ -8,11 +8,6 @@
     box-sizing: border-box;
     padding: 10px 20px;
     width: 100%;
-}
-
-.results {
-    position: absolute;
-    list-style: none;
-    padding: 5px;
-    margin: 0;
+    border: none;
+    border-right: 1px solid #0f8ac5;
 }

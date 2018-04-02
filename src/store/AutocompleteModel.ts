@@ -3,6 +3,22 @@ import { action, observable, reaction } from 'mobx';
 const endpoint = 'http://busbud-napi-prod.global.ssl.fastly.net/search';
 const buildQuery = (query: string) => `${endpoint}?q=${query}`;
 
+const moveCurrentSelection = (
+  selectionIndex: number | undefined, 
+  resultCount: number,
+  delta: number,
+) => {
+  const newSelectionIndex = selectionIndex === undefined
+    ? delta < 0 ? resultCount - 1 : delta - 1
+    : selectionIndex + delta;
+  
+  if (newSelectionIndex < 0 || newSelectionIndex >= resultCount) {
+    return undefined;
+  }
+
+  return newSelectionIndex;
+};
+
 export interface ApiResponse {
   city_id: string;
   city_url: string;
@@ -12,58 +28,100 @@ export interface ApiResponse {
   lon: number;
 }
 
+export type FieldType = 'departure' | 'destination';
 export interface AutoCompleteStoreShape {
-  departureInput: string;
-  departureResults: ApiResponse[];
-  destinationInput: string;
-  destinationResults: ApiResponse[];
+  departure: {
+    input: string,
+    apiResults: ApiResponse[],
+    currentSelection: number | undefined,
+  };
+  destination: {
+    input: string,
+    apiResults: ApiResponse[],
+    currentSelection: number | undefined,
+  };
 
-  updateDepartureFeild(value: string): void;
-  updateDestinationFeild(value: string): void;
+  updateFeild(value: string, field: FieldType): void;
   resetACResults(): void;
+  moveSelection(key: React.KeyboardEvent<{}>, fieldType: FieldType): void;
 }
 
 class AutoCompleteStore {
-  @observable departureInput: string = '';
-  @observable departureResults: ApiResponse[] = [];
-  @observable destinationInput: string = '';
-  @observable destinationResults: ApiResponse[] = [];
+  @observable departure = {
+    input: '' as string,
+    apiResults: [] as ApiResponse[],
+    currentSelection: undefined as number | undefined,
+  };
+  @observable destination = {
+    input: '' as string,
+    apiResults: [] as ApiResponse[],
+    currentSelection: undefined as number | undefined,
+  };
 
-  @action('updateDestinationFeild')
-  updateDepartureFeild = (newValue: string) => {
-    this.departureInput = newValue;
+  @action
+  updateFeild = (newValue: string, fieldType: FieldType) => {
+    this[fieldType].input = newValue;
   }
 
-  @action('updateDestinationFeild')
-  updateDestinationFeild = (newValue: string) => {
-    this.destinationInput = newValue;
+  @action
+  moveSelection = (event: React.KeyboardEvent<{}>, fieldType: FieldType) => {
+
+    switch (event.key) {
+      case 'Enter': 
+        const selectedIndex = this[fieldType].currentSelection; 
+        if (selectedIndex !== undefined) {
+          this.updateFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType);
+          this[fieldType].currentSelection = undefined;
+        }
+        break;
+
+      case 'ArrowUp': 
+        this[fieldType].currentSelection = moveCurrentSelection(
+          this[fieldType].currentSelection,
+          this[fieldType].apiResults.length,
+          -1
+        );
+        event.preventDefault();
+        break;
+
+      case 'ArrowDown': 
+        this[fieldType].currentSelection = moveCurrentSelection(
+          this[fieldType].currentSelection,
+          this[fieldType].apiResults.length,
+          +1
+        );
+        event.preventDefault();
+        break;
+      default: return;
+    }
   }
 
-  @action('fetchAutocomplete')
-  fetchAutocomplete = (query: string, resultType: 'departureResults' | 'destinationResults') => {
+  @action
+  fetchAutocomplete = (query: string, fieldType: FieldType) => {
     fetch(buildQuery(query))
       .then(res => res.json())
       .then(action((json: ApiResponse[]) => {
-        return this[resultType] = json;
+        return this[fieldType].apiResults = json;
       }));
   }
 }
+
 const autoCompleteStore = new AutoCompleteStore();
 
 reaction(
-  () => autoCompleteStore.departureInput,
+  () => autoCompleteStore.departure.input,
   query => {
     if (query.length >= 2) {
-      autoCompleteStore.fetchAutocomplete(query, 'departureResults');
+      autoCompleteStore.fetchAutocomplete(query, 'departure');
     }
   }
 );
 
 reaction(
-  () => autoCompleteStore.destinationInput,
+  () => autoCompleteStore.destination.input,
   query => {
     if (query.length >= 2) {
-      autoCompleteStore.fetchAutocomplete(query, 'destinationResults');
+      autoCompleteStore.fetchAutocomplete(query, 'destination');
     }
   }
 );
