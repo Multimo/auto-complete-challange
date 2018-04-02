@@ -58,7 +58,7 @@ class Autocomplete extends React.Component<Props> {
 
   render() {
     return (
-    <I18n ns="translations">
+    <I18n>
         {t => (
         <Form onSubmit={this.handSubmit}>
             <AutocompleteInput 

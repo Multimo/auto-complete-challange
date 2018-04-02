@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction } from 'mobx';
 
-const endpoint = 'http://busbud-napi-prod.global.ssl.fastly.net/search';
+const endpoint = 'https://busbud-napi-prod.global.ssl.fastly.net/search';
 const buildQuery = (query: string) => `${endpoint}?q=${query}`;
 
 const moveCurrentSelection = (

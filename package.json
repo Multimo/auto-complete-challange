@@ -1,7 +1,7 @@
 {
   "name": "auto-complete-challange",
   "version": "0.1.0",
-  "homepage": "https://multimo.github.io/autocomplete-challange",
+  "homepage": "https://multimo.github.io/auto-complete-challange/",
   "private": true,
   "dependencies": {
     "@types/i18next-browser-languagedetector": "^2.0.1",
@@ -68,7 +68,7 @@
   },
   "scripts": {
    "predeploy": "npm run build",
-   "deploy": "gh-pages -b master -d build",
+   "deploy": "gh-pages -d build",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"

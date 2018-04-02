@@ -12,7 +12,7 @@ const ListItem = listItem`
   padding: 10px 10px 10px 50px;
   transition: background 0.7s;
   cursor: pointer;
-  z-index: 2;
+  z-index: 4;
   background: ${props => props.isSelected ? '#084661' : 'none'};
 
   &:hover {

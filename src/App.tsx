@@ -2,6 +2,7 @@ import * as React from 'react';
 import { I18n } from 'react-i18next';
 import styled from 'styled-components';
 import Autocomplete from './components/Autocomplete/Autocomplete';
+// import i18n from './i18n';
 
 const Root = styled.div`
   height: 100vh;
@@ -41,7 +42,7 @@ const LanguageSwitcher = styled.button`
 `;
 
 const App = () => (
-  <I18n ns="translations">
+  <I18n>
    {(t, { i18n }) => (
       <Root>
         <Header>
