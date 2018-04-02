@@ -32,11 +32,13 @@ export type FieldType = 'departure' | 'destination';
 export interface AutoCompleteStoreShape {
   departure: {
     input: string,
+    searchSelectedValue: string | undefined,
     apiResults: ApiResponse[],
     currentSelection: number | undefined,
   };
   destination: {
     input: string,
+    searchSelectedValue: string | undefined,
     apiResults: ApiResponse[],
     currentSelection: number | undefined,
   };
@@ -52,11 +54,13 @@ export interface AutoCompleteStoreShape {
 class AutoCompleteStore {
   @observable departure = {
     input: '' as string,
+    searchSelectedValue: undefined as string | undefined,
     apiResults: [] as ApiResponse[],
     currentSelection: undefined as number | undefined,
   };
   @observable destination = {
     input: '' as string,
+    searchSelectedValue: undefined as string | undefined,
     apiResults: [] as ApiResponse[],
     currentSelection: undefined as number | undefined,
   };
@@ -64,6 +68,12 @@ class AutoCompleteStore {
   @action
   updateFeild = (newValue: string, fieldType: FieldType) => {
     this[fieldType].input = newValue;
+    this[fieldType].searchSelectedValue = undefined;
+  }
+
+  @action
+  updateSelectedFeild = (newValue: string, fieldType: FieldType) => {
+    this[fieldType].searchSelectedValue = newValue;
   }
 
   @action
@@ -80,12 +90,13 @@ class AutoCompleteStore {
 
   @action
   moveSelection = (event: React.KeyboardEvent<{}>, fieldType: FieldType) => {
-
+    
     switch (event.key) {
       case 'Enter': 
         const selectedIndex = this[fieldType].currentSelection; 
         if (selectedIndex !== undefined) {
           this.updateFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType);
+          this.updateSelectedFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType)
           this[fieldType].currentSelection = undefined;
         }
         break;
@@ -96,6 +107,13 @@ class AutoCompleteStore {
           this[fieldType].apiResults.length,
           -1
         );
+        
+        if (this[fieldType].currentSelection !== undefined) {
+          this.updateSelectedFeild(
+            this[fieldType].apiResults[this[fieldType].currentSelection!].full_name.split(',')[0], 
+            fieldType
+          );
+        }
         event.preventDefault();
         break;
 
@@ -105,6 +123,13 @@ class AutoCompleteStore {
           this[fieldType].apiResults.length,
           +1
         );
+
+        if (this[fieldType].currentSelection) {
+          this.updateSelectedFeild(
+            this[fieldType].apiResults[this[fieldType].currentSelection!].full_name.split(',')[0], 
+            fieldType
+          );
+        }
         event.preventDefault();
         break;
       default: return;

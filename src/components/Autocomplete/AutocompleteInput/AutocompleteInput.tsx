@@ -51,7 +51,11 @@ class AutocompleteInput extends React.Component<MobxProps> {
             type="text"
             autoComplete="off"
             required={true}
-            value={toJS(store[field].input)}
+            value={
+              store[field].searchSelectedValue 
+              ? store[field].searchSelectedValue 
+              : store[field].input
+            }
             placeholder={placeholder}
             onChange={(event) => store.updateFeild(event.target.value, field)}
             onFocus={() => this.setActive()}

@@ -52,7 +52,7 @@ const AutocompleteResults = ({ results, focused, selectedIndex, updateFeild, fie
             <ListItem 
               key={result.city_id} 
               isSelected={selectedIndex === index}
-              onClick={() => updateFeild(result.full_name, field)}
+              onClick={() => updateFeild(result.full_name.split(',')[0], field)}
             >
               {result.full_name}
             </ListItem>
