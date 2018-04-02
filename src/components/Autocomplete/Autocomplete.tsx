@@ -4,7 +4,6 @@ import * as React from 'react';
 import { I18n } from 'react-i18next';
 import { AutoCompleteStoreShape } from 'store/AutocompleteModel';
 import styled from 'styled-components';
-import './Autocomplete.css';
 import AutocompleteInput from './AutocompleteInput/AutocompleteInput';
 
 const searchSvg = require('./search.svg');
@@ -15,6 +14,10 @@ const Form = styled.form`
   margin: 60px 0 25px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.52);
 
+  > *:first-child {
+    z-index: 4;
+  }
+  
   @media screen and (max-width: 600px) {
       box-shadow: none;
       flex-direction: column;
