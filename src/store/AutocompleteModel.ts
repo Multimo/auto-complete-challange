@@ -69,10 +69,11 @@ class AutoCompleteStore {
   updateFeild = (newValue: string, fieldType: FieldType) => {
     this[fieldType].input = newValue;
     this[fieldType].searchSelectedValue = undefined;
+    this[fieldType].currentSelection = undefined;
   }
 
   @action
-  updateSelectedFeild = (newValue: string, fieldType: FieldType) => {
+  updateSelectedFeild = (newValue: string | undefined, fieldType: FieldType) => {
     this[fieldType].searchSelectedValue = newValue;
   }
 
@@ -96,7 +97,7 @@ class AutoCompleteStore {
         const selectedIndex = this[fieldType].currentSelection; 
         if (selectedIndex !== undefined) {
           this.updateFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType);
-          this.updateSelectedFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType)
+          this.updateSelectedFeild(this[fieldType].apiResults[selectedIndex].full_name, fieldType);
           this[fieldType].currentSelection = undefined;
         }
         break;
@@ -113,7 +114,10 @@ class AutoCompleteStore {
             this[fieldType].apiResults[this[fieldType].currentSelection!].full_name.split(',')[0], 
             fieldType
           );
+        } else {
+          this.updateSelectedFeild(undefined, fieldType);
         }
+        
         event.preventDefault();
         break;
 
@@ -124,11 +128,13 @@ class AutoCompleteStore {
           +1
         );
 
-        if (this[fieldType].currentSelection) {
+        if (this[fieldType].currentSelection !== undefined) {
           this.updateSelectedFeild(
             this[fieldType].apiResults[this[fieldType].currentSelection!].full_name.split(',')[0], 
             fieldType
           );
+        } else {
+          this.updateSelectedFeild(undefined, fieldType);
         }
         event.preventDefault();
         break;
@@ -156,7 +162,8 @@ reaction(
     }
 
     autoCompleteStore.departure.apiResults = [];
-  }
+  },
+  { delay: 200 }
 );
 
 reaction(
@@ -166,7 +173,8 @@ reaction(
       return autoCompleteStore.fetchAutocomplete(query, 'destination');
     }
     autoCompleteStore.destination.apiResults = [];
-  }
+  },
+  { delay: 200 }
 );
 
 export default autoCompleteStore;

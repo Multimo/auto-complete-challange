@@ -1,4 +1,3 @@
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { AutoCompleteStoreShape, FieldType } from 'store/AutocompleteModel';
@@ -52,9 +51,9 @@ class AutocompleteInput extends React.Component<MobxProps> {
             autoComplete="off"
             required={true}
             value={
-              store[field].searchSelectedValue 
-              ? store[field].searchSelectedValue 
-              : store[field].input
+              store[field].searchSelectedValue
+                ? store[field].searchSelectedValue 
+                : store[field].input
             }
             placeholder={placeholder}
             onChange={(event) => store.updateFeild(event.target.value, field)}
