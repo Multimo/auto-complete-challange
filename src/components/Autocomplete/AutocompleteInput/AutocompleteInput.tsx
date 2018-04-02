@@ -3,7 +3,8 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { AutoCompleteStoreShape, FieldType } from 'store/AutocompleteModel';
 import AutocompleteResults from '../AutocompleteResults/AutocompleteResults'; 
-import { FadeInOut, Image, Input, InputContainer, Root, SwapSvg } from './Components';
+import { Fade, Image, Input, InputContainer, Root, SwapSvg } from './Components';
+
 const departure = require('./departure.svg');
 const destination = require('./destination.svg');
 const swap = require('./swap.svg');
@@ -22,7 +23,11 @@ class AutocompleteInput extends React.Component<MobxProps> {
   state = { active: false };
 
   setActive = () => {
-    this.setState(() => ({ active: !this.state.active }));
+    // TODO: fix this hack, event propergation maybe?
+    setTimeout(
+      () => { this.setState({ active: !this.state.active }); },
+      100
+    );
   }
 
   render() {
@@ -31,10 +36,10 @@ class AutocompleteInput extends React.Component<MobxProps> {
 
     return (
       <Root>
-        <InputContainer>
-          <FadeInOut in={this.state.active}>
-          {placeholder}
-          </FadeInOut>
+        <InputContainer isFocused={this.state.active}>
+          <Fade in={this.state.active}>
+            {placeholder}
+          </Fade>
           <Image 
             src={field === 'departure' ? departure : destination} 
             className="App-logo" 

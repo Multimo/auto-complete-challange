@@ -4,6 +4,7 @@ import * as React from 'react';
 import { AutoCompleteStoreShape } from 'store/AutocompleteModel';
 import './Autocomplete.css';
 import AutocompleteInput from './AutocompleteInput/AutocompleteInput';
+const search = require('./search.svg');
 
 interface Props {
   store: AutoCompleteStoreShape;
@@ -31,7 +32,10 @@ class Autocomplete extends React.Component<Props> {
                 field="destination"
                 placeholder="Going to"
             />
-            <button className="submit" type="submit">Submit</button>
+            <button className="submit" type="submit">
+                <img src={search} />
+                <span>Search</span>
+            </button>
         </form>
     );
   }

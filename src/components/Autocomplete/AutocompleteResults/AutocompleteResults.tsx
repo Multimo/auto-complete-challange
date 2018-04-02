@@ -7,9 +7,9 @@ interface ListItemProps {
 }
 const listItem: StyledFunction<ListItemProps & React.HTMLProps<HTMLLIElement>> = styled.li;
 const ListItem = listItem`
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 300;
-  padding: 10px 10px 10px 40px;
+  padding: 10px 10px 10px 50px;
   transition: background 0.7s;
   cursor: pointer;
   z-index: 2;
@@ -29,6 +29,7 @@ const Results = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  z-index: 4;
   background: #1d7fd1;
   width: 100%;
 `;
@@ -42,7 +43,7 @@ interface Props {
 }
 
 const AutocompleteResults = ({ results, focused, selectedIndex, updateFeild, field }: Props) => {
-  if (!results) {
+  if (!results || !focused) {
     return null;
   }
   return (

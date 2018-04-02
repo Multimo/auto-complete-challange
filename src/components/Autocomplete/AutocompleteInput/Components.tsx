@@ -1,15 +1,32 @@
-import withAnimation from 'styled-animate';
-import styled from 'styled-components';
+import * as React from 'react';
+import styled, { StyledFunction } from 'styled-components';
+import transition from 'styled-transition-group';
 
 export const Root = styled.div`
   flex-grow: 1;
   position: relative;
+  z-index: 1;
+
+  @media (max-width: 600px) {
+    margin-bottom: 45px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.52);
+  }
 `;
 
-export const InputContainer = styled.div`
+interface ContainerProps {
+  isFocused?: boolean;
+}
+const typedContainer: StyledFunction<ContainerProps & React.HTMLProps<HTMLDivElement>> = styled.div;
+export const InputContainer = typedContainer`
+  position: relative;
   display: flex;
   border-right: 1px solid #3794e4;
   background: #2186dc;
+  background: ${props => props.isFocused ? '#2a8ee2' : '#2186dc' }
+
+  @media (max-width: 600px) {
+    border-right: none;
+  }
 `;
 
 export const SwapSvg = styled.img`
@@ -18,21 +35,22 @@ export const SwapSvg = styled.img`
   right: 10px;
   top: 5px;
   background: #2286dc;
+  z-index: 3;
 `;
 
 export const Image = styled.img`
-  padding-left: 10px;
+  padding-left: 15px;
 `;
 
 export const Input = styled.input`
   box-sizing: border-box;
-  padding: 15px 10px;
+  padding: 15px;
   width: 100%;
+  z-index: 2;
   background: none;
-  font-size: 16px;
+  font-size: 14px;
   border: none;
   color: white;
-  
   outline: none;
 
 
@@ -42,20 +60,41 @@ export const Input = styled.input`
   }
 `;
 
-const Foo = styled.div`
-  position: absolute;
-  background: #084661;
-  color: white;
-  z-index: 1;
-  font-size: 10px;
-  text-align: center;
-  padding: 10px;
-`;
+export const Fade = transition.div.attrs({
+  unmountOnExit: true,
+  timeout: 350
+})`
+position: absolute;
+background: #084661;
+color: white;
+font-weight: 300;
+z-index: -1;
+font-size: 13px;
+text-align: center;
+padding: 5px 0;
+width: 100%;
+top: -25px;
 
-export const FadeInOut = withAnimation(Foo, {
-  transition: '0.7s cubic-bezier(0.3, 0.8, 0.5, 1)',
-  animate: {
-    bottom: ['0px', '45px'],
-    opacity: ['0', '1']
-  }
-});
+&:enter { 
+  opacity: 0.01;
+  top: 0px;
+}
+&:enter-active {
+  opacity: 1;
+  top: -25px;
+  transition: 
+    opacity 350ms ease-in,
+    top 350ms ease-in;
+}
+&:exit { 
+  opacity: 1;
+  top: -25px;
+}
+&:exit-active {
+  opacity: 0.01;
+  top: 0px;
+  transition: 
+    opacity 350ms ease-in,
+    top 350ms ease-in;
+}
+`;
